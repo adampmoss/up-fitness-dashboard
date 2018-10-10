@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+        <script src="airtable.browser.js"></script>
+    </head>
+    <body>
+        <h1>Airtable API Test</h1>
+    </body>
+
+
+    <script>
+// var Airtable = require('airtable');
+// // Get a base ID for an instance of art gallery example
+// var base = new Airtable({ apiKey: 'keyLvNwcPezNiGB0l' }).base('FILL_OUT_BASE_ID');
+
+// console.log(base);
+
+
+var Airtable = require('airtable');
+
+Airtable.configure({
+    endpointUrl: 'https://api.airtable.com',
+    apiKey: 'keyLvNwcPezNiGB0l'
+});
+var base = Airtable.base('appcnpE7JXVeyKpEv');
+
+
+base('Design Projects').select({
+    // Selecting the first 3 records in Main View:
+    maxRecords: 999,
+    view: "Main View"
+}).eachPage(function page(records, fetchNextPage) {
+    // This function (`page`) will get called for each page of records.
+    var i = 1;
+
+    records.forEach(function(record) {
+        console.log(i+') Retrieved '+ record.get('Name') +', '+ record.get('Category'));
+        i++;
+    });
+
+    // To fetch the next page of records, call `fetchNextPage`.
+    // If there are more records, `page` will get called again.
+    // If there are no more records, `done` will get called.
+    fetchNextPage();
+
+}, function done(err) {
+    if (err) { console.error(err); return; }
+});
+
+
+
+base('Tasks').select({
+    // Selecting the first 3 records in Main View:
+    maxRecords: 999,
+    view: "Main View"
+}).eachPage(function page(records, fetchNextPage) {
+    // This function (`page`) will get called for each page of records.
+    var i = 1;
+
+    records.forEach(function(record) {
+        console.log(i+') Retrieved '+ record.get('Name'));
+        i++;
+    });
+
+    // To fetch the next page of records, call `fetchNextPage`.
+    // If there are more records, `page` will get called again.
+    // If there are no more records, `done` will get called.
+    fetchNextPage();
+
+}, function done(err) {
+    if (err) { console.error(err); return; }
+});
+
+// base('Design Projects').select({
+//     view: 'Main View'
+// }).firstPage(function(err, records) {
+//     if (err) { console.error(err); return; }
+//     records.forEach(function(record) {
+//         console.log('Retrieved', record.get('Name'));
+//     });
+// });
+
+</script>
+</html>
